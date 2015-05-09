@@ -1,0 +1,72 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+const int MAX = 110;
+int BS[2][MAX];
+int cntx;
+int n,D;   //n块石头，距离为d 
+void Initial(){
+	cntx = 0;
+	memset(BS,-1,sizeof(BS));
+}
+void Computing(){
+	int lenA = 0; //A青蛙走的路程 
+	int lenB = 0; //B青蛙走的路程 
+	int next = 0;  //0代表A，1代表B，next为下一个是哪个青蛙走小石头 
+	int maxstep = 0;
+	for(int i=0;i<cntx;i++){
+		//A\B两只青蛙轮流走S那块石头
+		 int step;
+		 if(BS[0][i]!=-1){
+		 	//碰到了大石头
+		 	//cout<<"B dis="<<BS[0][i]<<endl;
+			 step = max(BS[0][i] - lenA,BS[0][i] - lenB);
+			 lenA = lenB =BS[0][i];
+		 }
+		 else{
+		 	//cout<<"S dis="<<BS[1][i]<<endl;
+		 	//碰到了小石头
+			if(next){
+				//B走这块小石头 
+				step = BS[1][i]-lenB;
+				lenB = BS[1][i];
+				next = 0;
+			} 
+			else{
+				step = BS[1][i] - lenA;
+				lenA = BS[1][i];
+				next = 1;
+			}
+		 }
+		 if(step > maxstep) maxstep = step;
+	} 
+	printf("%d\n",maxstep);
+}
+int main(){
+	int N;
+	scanf("%d",&N);
+	for(int cnt=1;cnt<=N;cnt++){
+		Initial();
+		scanf("%d%d",&n,&D);
+		for(int i=0;i<n;i++){
+			getchar();
+			char ch1,ch2;
+			int x;
+			scanf("%c%c%d",&ch1,&ch2,&x);
+			if(ch1 == 'B'){
+				BS[0][cntx++] = x;
+				//cout<<"B:"<<x<<endl;
+			}
+			else if(ch1 == 'S'){
+				BS[1][cntx++] = x;
+				//cout<<"S:"<<x<<endl;
+			}
+			
+		}
+		BS[0][cntx++] = D;  //终点 
+		printf("Case %d: ",cnt);
+		Computing();
+	}
+	return 0;
+}
