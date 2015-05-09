@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+const int MAXN = 20010;
+int vis[MAXN];
+struct line{
+	int l,r;
+	line(int a,int b):l(a),r(b){}
+	bool friend operator < (struct line A,struct line B){
+		return A.r < B.r;
+	}
+};
+vector<line> L;
+void Initial(){
+	memset(vis,0,sizeof(vis));
+	L.clear();
+}
+int main(){
+	int N;
+	cin >> N;
+	while(N--){
+		Initial();
+		int K,n;
+		cin>>K>>n;
+		for(int i=0;i<n;i++){
+			int l,r;
+			cin>>l>>r;
+			if(l>r){
+				int temp = l;
+				l = r;
+				r = temp;
+			}
+			L.push_back(line(l+10000,r+10000)); 
+		}
+		sort(L.begin(),L.end());
+		
+		int cnt = 0;
+		for(int i=0;i<L.size();i++){
+			int load = K;
+			for(int j=L[i].l;j<=L[i].r;j++){
+				if(vis[j]){
+					load--;
+				}  //还需load个点 
+			}
+			for(int j=L[i].r;j>=L[i].l && load>0;j--){
+				if(vis[j]==0){
+					load--;
+					cnt++;
+					vis[j] = 1;
+				}
+			}
+		}
+		
+		cout<<cnt<<endl;	
+		for(int i=0;i<MAXN;i++){
+			if(vis[i]) cout<<i-10000<<endl;
+		}
+		if(N) cout<<endl;
+	}
+	return 0;
+}
