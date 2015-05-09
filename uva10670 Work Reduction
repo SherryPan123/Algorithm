@@ -1,0 +1,70 @@
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+struct company{
+	string name;
+	int a,b;
+	int sum;
+	company(string x,int y,int z):name(x),a(y),b(z){}
+	bool friend operator < (struct company A,struct company B){
+		if(A.sum == B.sum) return A.name < B.name;
+		return A.sum<B.sum;
+	}
+};
+vector<company> My;
+int N,M,L;
+void Input(){
+	My.clear();   //初始化 
+	scanf("%d%d%d",&N,&M,&L); 
+	for(int i=0;i<L;i++){
+		getchar();  //吸收回车 
+		char ch;
+		string x;
+		while(1){
+			ch = getchar();
+			if(ch == ':' || ch == ' ') break;
+			x.push_back(ch);
+		}
+		x.push_back('\0');
+		int a,b;
+		scanf("%d,%d",&a,&b);
+		My.push_back(company(x,a,b));
+	}
+	/*for(int i=0;i<My.size();i++){
+		cout<<My[i].name<<" "<<My[i].a<<","<<My[i].b<<endl;
+	}*/
+}
+void Computing(){
+	for(int i=0;i<My.size();i++){
+		int summ = 0;
+		int num = N;
+		while(num/2 >= M){
+			int xx = num-num/2;
+			//cout<<"xx="<<xx<<endl;
+			summ += min(My[i].a*xx,My[i].b);
+			num = num-xx;
+		}
+		if(num>M) summ += My[i].a*(num-M);
+		My[i].sum = summ;
+	} 
+}
+void Output(){
+	sort(My.begin(),My.end());
+	for(int i=0;i<My.size();i++){
+		printf("%s %d\n",My[i].name.c_str(),My[i].sum);
+	}
+}
+int main(){
+	int n;
+	scanf("%d",&n);
+	for(int t=1;t<=n;t++){
+		printf("Case %d\n",t);
+		Input();
+		Computing();
+		Output();
+	}
+	return 0;
+}
