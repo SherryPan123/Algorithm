@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+const int INF = 0x3f3f3f3f;
+struct line{
+	int left;
+	int right;
+	line(int l,int r):left(l),right(r){}
+	bool friend operator < (struct line A,struct line B){
+		if(A.left == B.left) return A.right<B.right;
+		return A.left<B.left;
+	}
+};
+vector<line> myline;
+vector<line> ans;
+int main(){
+	int N;
+	cin>>N;
+	while(N--){
+		ans.clear();
+		myline.clear();
+		int m;
+		cin>>m;  //[0,m]
+		int l,r;
+		while(cin>>l>>r){
+			if(l==0 && r==0) break;
+			myline.push_back(line(l,r)); 
+		} 
+		sort(myline.begin(),myline.end());
+		
+		int next,cover = 0;
+		int cur = 0;   //用多少条线覆盖 
+		l = 0;
+		r = m;
+		int flag = 0;
+		while(1){  
+			if(l>=r)  break;  
+			int max=0;  
+			flag = 0;  
+			int pox;
+			for(int i=0; i<myline.size(); i++)
+			{  
+				if(l>=myline[i].left && max<myline[i].right)
+	     	{  
+					pox=i;  
+					flag=1;  
+					max=myline[i].right;  
+				}  
+      }  
+			if(flag)  
+			{  
+				ans.push_back(myline[pox]);  
+				l = myline[pox].right;//对左边贪心  
+            }  
+            else  break;  
+        }  
+
+		if(flag){
+			cout<<ans.size()<<endl;
+			for(int i=0;i<ans.size();i++)
+				cout<<ans[i].left<<" "<<ans[i].right<<endl;
+		}
+		else{
+			cout<<0<<endl;
+		}
+		if(N>=1) cout<<endl;
+		/*for(int i=0;i<myline.size();i++)
+			cout<<myline[i].left<<","<<myline[i].right<<endl;*/
+	}
+	return 0;
+}
