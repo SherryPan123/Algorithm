@@ -1,0 +1,41 @@
+//证明：因为序列ab得到的最小罚时和之后工作的排列顺序无关 
+// ab的罚时为a.time*b.cost  ;  ba的罚时为b.time*a.cost
+//ab 比 ba优的条件是 a.time*b.cost < b.time*a.cost
+//即 b.cost/b.time  <  a.cost/a.time 所以从大到小排序 
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+struct shoe{
+	int order;
+	int time;
+	int cost;
+	shoe(int a,int b,int c):order(a),time(b),cost(c){}
+	bool friend operator < (struct shoe A, struct shoe B){
+		return (double(A.cost)/A.time) > (double(B.cost)/B.time);
+	}
+};
+vector<shoe> Q;
+int main(){
+	int N;
+	cin>>N;
+	while(N--){
+		int n;
+		cin>>n; 
+		Q.clear();
+		Q.push_back(shoe(0,0,0));
+		for(int i=1;i<=n;i++){
+			int x,y;
+			cin>>x>>y;
+			Q.push_back(shoe(i,x,y)); 
+		}
+		sort(Q.begin()+1,Q.end());
+		cout<<Q[1].order;
+		for(int i=2;i<Q.size();i++){
+			cout<<" "<<Q[i].order;
+		}
+		cout<<endl;
+		if(N) cout<<endl;
+	}
+	return 0;
+}
