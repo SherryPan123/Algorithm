@@ -1,0 +1,52 @@
+#include <iostream>
+#include <string>
+using namespace std;
+const int INF = 0x3f3f3f3f;
+//0:BCG 1:BGC 2:CBG 3:CGB 4:GBC 5:GCB
+string str[6] ={"BCG","BGC","CBG","CGB","GBC","GCB"};
+int main(){
+	int bin[9];
+	int x;
+	while(cin>>x){
+		int min = INF;
+		int flag;
+		bin[0] = x;
+		for(int i=1;i<9;i++){
+			cin>>x;
+			bin[i] = x;
+		}		
+		int sum = bin[3]+bin[6]+bin[1]+bin[4]+bin[2]+bin[8];
+		if(sum < min){
+			min = sum;
+			flag = 0;
+		} 
+		sum = bin[3]+bin[6]+bin[1]+bin[7]+bin[2]+bin[5];
+		if(sum < min){
+			min = sum;
+			flag = 1;
+		} 
+		sum = bin[0]+bin[6]+bin[1]+bin[4]+bin[8]+bin[5];
+		if(sum < min){
+			min = sum;
+			flag = 2;
+		} 
+		sum = bin[0]+bin[3]+bin[1]+bin[7]+bin[8]+bin[5];
+		if(sum < min){
+			min = sum;
+			flag = 3;
+		} 
+		sum = bin[0]+bin[6]+bin[7]+bin[4]+bin[2]+bin[5];
+		if(sum < min){
+			min = sum;
+			flag = 4;
+		} 
+		sum = bin[0]+bin[3]+bin[7]+bin[4]+bin[8]+bin[2];
+		if(sum < min){
+			min = sum;
+			flag = 5;
+		} 
+		cout<<str[flag]<<" ";
+		cout<<min<<endl;
+	}
+	return 0;
+}
