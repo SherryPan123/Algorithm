@@ -1,0 +1,30 @@
+#include <iostream>
+using namespace std;
+const int MAXN = 1500;
+int at[MAXN];
+int main(){
+	int N;
+	cin>>N;
+	while(N--){
+		int n,t,m;
+		cin>>n>>t>>m;
+		at[0] = 0;
+		for(int i=1;i<=m;i++){
+			cin>>at[i];
+		}
+		int x = m/n;
+		int left = m%n;  //第一次运left辆车 
+		//cout<<"船往返次数="<<x+1<<endl;
+		int sum;	//第一次运完需要的时间 
+		if(left == 0)	sum = 0;
+		else sum = at[left] + 2*t;
+		   
+		for(int i=left+n;i<=m;i+=n){  //x次满载 
+			sum = max(sum,at[i]) + 2*t;
+		}
+		sum -= t;
+		if(left==0) cout<<sum<<" "<<x<<endl;
+		else cout<<sum<<" "<<x+1<<endl;
+	} 
+	return 0;
+}
